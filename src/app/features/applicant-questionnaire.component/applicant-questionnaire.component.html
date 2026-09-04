@@ -1,0 +1,83 @@
+<section class="questionnaire">
+  <div class="questionnaire__header">
+    <p class="eyebrow">Tell us about your application</p>
+
+    <h1>Let's figure out what applies to you.</h1>
+
+    <p class="intro">
+      Answer a few questions so we can determine which requirements
+      apply to your situation.
+    </p>
+  </div>
+
+  <div class="question">
+    <h2>Who is the application for?</h2>
+
+    <div class="options">
+      <button
+        type="button"
+        class="option"
+        [class.option--selected]="applicantType === 'adult'"
+        (click)="selectApplicantType('adult')"
+      >
+        <span class="option__title">Adult</span>
+        <span class="option__description">
+          The applicant is 18 years old or older.
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="option"
+        [class.option--selected]="applicantType === 'minor'"
+        (click)="selectApplicantType('minor')"
+      >
+        <span class="option__title">Minor</span>
+        <span class="option__description">
+          The applicant is below 18 years old.
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="question">
+    <h2>What type of application is this?</h2>
+
+    <div class="options">
+      <button
+        type="button"
+        class="option"
+        [class.option--selected]="applicationType === 'new'"
+        (click)="selectApplicationType('new')"
+      >
+        <span class="option__title">New application</span>
+        <span class="option__description">
+          You are applying for this document for the first time.
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="option"
+        [class.option--selected]="applicationType === 'renewal'"
+        (click)="selectApplicationType('renewal')"
+      >
+        <span class="option__title">Renewal</span>
+        <span class="option__description">
+          You already have or previously had this document.
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="questionnaire__actions">
+    <button
+      type="button"
+      class="continue-button"
+      [disabled]="!applicantType || !applicationType"
+      (click)="continue()"
+    >
+      Continue
+    </button>
+  </div>
+</section>
