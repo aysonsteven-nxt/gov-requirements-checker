@@ -1,3 +1,4 @@
+import { RequirementCondition } from './requirement-condition';
 import { RequirementSource } from './source';
 
 export interface Requirement {
@@ -5,5 +6,9 @@ export interface Requirement {
   name: string;
   description?: string;
   required: boolean;
+
+  condition?: RequirementCondition;
+  alternativeGroup?: string;
+
   source: RequirementSource;
 }

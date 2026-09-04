@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { ServiceSelectionComponent } from './service-selection.component';
 
 describe('ServiceSelectionComponent', () => {
