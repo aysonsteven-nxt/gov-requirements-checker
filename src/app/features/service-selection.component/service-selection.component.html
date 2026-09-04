@@ -1,1 +1,57 @@
-<p>service-selection.component works!</p>
+<section class="service-selection">
+  <div class="service-selection__header">
+    <p class="eyebrow">Government Requirements Checker</p>
+
+    <h1>What government service do you need?</h1>
+
+    <p class="intro">
+      Select a government transaction to see what you need before you go.
+    </p>
+  </div>
+
+  <div class="service-list">
+    @for (service of services; track service.id) {
+      <button
+        type="button"
+        class="service-card"
+        [class.service-card--selected]="selectedServiceId === service.id"
+        (click)="selectService(service)"
+      >
+        <div class="service-card__content">
+          <span class="service-card__category">
+            {{ service.category }}
+          </span>
+
+          <h2>{{ service.name }}</h2>
+
+          @if (service.description) {
+            <p>{{ service.description }}</p>
+          }
+
+          <span class="service-card__agency">
+            {{ service.agency }}
+          </span>
+        </div>
+
+        <span class="service-card__indicator">
+          @if (selectedServiceId === service.id) {
+            ✓
+          } @else {
+            →
+          }
+        </span>
+      </button>
+    }
+  </div>
+
+  <div class="service-selection__actions">
+    <button
+      type="button"
+      class="continue-button"
+      [disabled]="!selectedServiceId"
+      (click)="continue()"
+    >
+      Continue
+    </button>
+  </div>
+</section>

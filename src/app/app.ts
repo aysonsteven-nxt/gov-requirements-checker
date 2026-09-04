@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+
+import { GovernmentService } from './core/models/government-service';
+import { ServiceSelectionComponent } from './features/service-selection.component/service-selection.component';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.scss',
+  imports: [ServiceSelectionComponent],
   templateUrl: './app.html',
+  styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('gov-requirements-checker');
+  selectedService: GovernmentService | null = null;
+
+  onServiceSelected(service: GovernmentService): void {
+    this.selectedService = service;
+  }
 }
