@@ -1,9 +1,14 @@
 @if (!selectedService) {
   <app-service-selection
     (serviceSelected)="onServiceSelected($event)"
-  />
-} @else {
+  ></app-service-selection>
+} @else if (!applicantContext) {
   <app-applicant-questionnaire
     (contextSubmitted)="onApplicantContextSubmitted($event)"
-  />
+  ></app-applicant-questionnaire>
+} @else {
+  <app-requirements-checker
+    [service]="selectedService"
+    [context]="applicantContext"
+  ></app-requirements-checker>
 }

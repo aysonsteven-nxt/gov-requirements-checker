@@ -1,0 +1,142 @@
+.requirements-checker {
+  width: min(100% - 2rem, 800px);
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+.requirements-checker__header {
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+
+.intro {
+  margin: 1rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.requirements__header {
+  margin-bottom: 1.5rem;
+}
+
+.requirements__header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.requirements__header p {
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.requirement__content {
+  min-width: 0;
+}
+
+.requirement h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.requirement p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.requirement small {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.alternative-label {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.requirement__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+.requirement__actions button {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.requirement__actions button.active {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.summary {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+}
+
+.summary--complete {
+  border-color: #111;
+}
+
+.summary h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.summary p {
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
+.summary strong {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.requirements-checker__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.finish-button {
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 8px;
+  background: #111;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}

@@ -1,1 +1,126 @@
-<p>requirements-checker.component works!</p>
+<section class="requirements-checker">
+  <header class="requirements-checker__header">
+    <p class="eyebrow">{{ service().agency }}</p>
+
+    <h1>{{ service().name }}</h1>
+
+    @if (service().description) {
+      <p class="intro">
+        {{ service().description }}
+      </p>
+    }
+  </header>
+
+  <div class="requirements">
+    <div class="requirements__header">
+      <h2>What do you already have?</h2>
+
+      <p>
+        Tell us which documents or requirements you already have.
+        We'll identify what's still missing.
+      </p>
+    </div>
+
+    @if (result) {
+      @for (
+        evaluation of result.evaluations;
+        track evaluation.requirement.id
+      ) {
+        @if (evaluation.applicable) {
+          <article class="requirement">
+            <div class="requirement__content">
+              <h3>{{ evaluation.requirement.name }}</h3>
+
+              @if (evaluation.requirement.description) {
+                <p>
+                  {{ evaluation.requirement.description }}
+                </p>
+              }
+
+              @if (evaluation.requirement.alternativeGroup) {
+                <span class="alternative-label">
+                  One of the accepted alternatives
+                </span>
+              }
+
+              <small>
+                Source:
+                {{ evaluation.requirement.source.agency }}
+              </small>
+            </div>
+
+            <div class="requirement__actions">
+              <button
+                type="button"
+                [class.active]="
+                  getStatus(evaluation.requirement.id) === 'satisfied'
+                "
+                (click)="
+                  setRequirementStatus(
+                    evaluation.requirement.id,
+                    'satisfied'
+                  )
+                "
+              >
+                I have this
+              </button>
+
+              <button
+                type="button"
+                [class.active]="
+                  getStatus(evaluation.requirement.id) === 'not-satisfied'
+                "
+                (click)="
+                  setRequirementStatus(
+                    evaluation.requirement.id,
+                    'not-satisfied'
+                  )
+                "
+              >
+                I don't have this
+              </button>
+            </div>
+          </article>
+        }
+      }
+    }
+  </div>
+
+  @if (result) {
+    <div
+      class="summary"
+      [class.summary--complete]="result.complete"
+    >
+      @if (result.complete) {
+        <h2>You're ready to proceed</h2>
+
+        <p>
+          You have satisfied all applicable requirements.
+        </p>
+      } @else {
+        <h2>You still have requirements to complete</h2>
+
+        <p>
+          {{ result.totalSatisfied }}
+          of
+          {{ result.totalApplicable }}
+          applicable requirements are satisfied.
+        </p>
+
+        <strong>
+          {{ result.totalMissing }} missing
+        </strong>
+      }
+    </div>
+  }
+
+  <div class="requirements-checker__actions">
+    <button
+      type="button"
+      class="finish-button"
+      (click)="finish()"
+    >
+      View my requirements
+    </button>
+  </div>
+</section>

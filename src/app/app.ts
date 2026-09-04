@@ -3,10 +3,11 @@ import { ApplicantContext } from './core/models/applicant-context';
 import { ApplicantQuestionnaireComponent } from './features/applicant-questionnaire.component/applicant-questionnaire.component';
 import { GovernmentService } from './core/models/government-service';
 import { ServiceSelectionComponent } from './features/service-selection.component/service-selection.component';
+import { RequirementsCheckerComponent } from './features/requirements-checker.component/requirements-checker.component';
 
 @Component({
   selector: 'app-root',
-  imports: [ServiceSelectionComponent, ApplicantQuestionnaireComponent],
+  imports: [ServiceSelectionComponent, ApplicantQuestionnaireComponent, RequirementsCheckerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
