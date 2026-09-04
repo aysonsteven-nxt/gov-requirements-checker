@@ -38,6 +38,41 @@ describe('RequirementsCheckerComponent', () => {
         },
       },
       {
+        id: 'requirement-2',
+        name: 'Requirement 2',
+        required: true,
+        source: {
+          agency: 'Test Agency',
+          title: 'Test Source',
+          url: 'https://example.com',
+          lastVerified: '2026-09-04',
+        },
+      },
+      {
+        id: 'identity-national-id',
+        name: 'National ID',
+        required: true,
+        alternativeGroup: 'proof-of-identity',
+        source: {
+          agency: 'Test Agency',
+          title: 'Test Source',
+          url: 'https://example.com',
+          lastVerified: '2026-09-04',
+        },
+      },
+      {
+        id: 'identity-drivers-license',
+        name: "Driver's License",
+        required: true,
+        alternativeGroup: 'proof-of-identity',
+        source: {
+          agency: 'Test Agency',
+          title: 'Test Source',
+          url: 'https://example.com',
+          lastVerified: '2026-09-04',
+        },
+      },
+      {
         id: 'minor-requirement',
         name: 'Minor Requirement',
         required: true,
@@ -90,44 +125,89 @@ describe('RequirementsCheckerComponent', () => {
 
   it('should evaluate requirements on initialization', () => {
     expect(component.result).toBeTruthy();
-    expect(component.result?.totalApplicable).toBe(1);
+    expect(component.result?.totalApplicable).toBe(3);
     expect(component.result?.totalSatisfied).toBe(0);
-    expect(component.result?.totalMissing).toBe(1);
+    expect(component.result?.totalMissing).toBe(3);
     expect(component.result?.complete).toBe(false);
   });
 
-  it('should evaluate requirements using the provided service and context', () => {
-    component.evaluate();
+  it('should return individual applicable requirements', () => {
+    const requirements =
+      component.getIndividualRequirements();
 
-    expect(component.result).toBeTruthy();
-    expect(component.result?.totalApplicable).toBe(1);
-    expect(component.result?.totalMissing).toBe(1);
-    expect(component.result?.complete).toBe(false);
+    expect(requirements).toHaveLength(2);
+
+    expect(
+      requirements.map(
+        (evaluation) => evaluation.requirement.id
+      )
+    ).toEqual([
+      'requirement-1',
+      'requirement-2',
+    ]);
+  });
+
+  it('should group alternative requirements', () => {
+    const groups = component.getAlternativeGroups();
+
+    expect(groups).toHaveLength(1);
+    expect(groups[0].id).toBe('proof-of-identity');
+    expect(groups[0].evaluations).toHaveLength(2);
+
+    expect(
+      groups[0].evaluations.map(
+        (evaluation) => evaluation.requirement.id
+      )
+    ).toEqual([
+      'identity-national-id',
+      'identity-drivers-license',
+    ]);
+  });
+
+  it('should report an alternative group as unsatisfied when no option is satisfied', () => {
+    const groups = component.getAlternativeGroups();
+
+    expect(
+      component.isAlternativeGroupSatisfied(
+        groups[0].evaluations
+      )
+    ).toBe(false);
+  });
+
+  it('should report an alternative group as satisfied when any option is satisfied', () => {
+    component.setRequirementStatus(
+      'identity-drivers-license',
+      'satisfied'
+    );
+
+    const groups = component.getAlternativeGroups();
+
+    expect(
+      component.isAlternativeGroupSatisfied(
+        groups[0].evaluations
+      )
+    ).toBe(true);
   });
 
   it('should mark a requirement as satisfied', () => {
-    component.evaluate();
-
     component.setRequirementStatus(
       'requirement-1',
       'satisfied'
     );
 
     expect(component.result?.totalSatisfied).toBe(1);
-    expect(component.result?.totalMissing).toBe(0);
-    expect(component.result?.complete).toBe(true);
+    expect(component.result?.totalMissing).toBe(2);
+    expect(component.result?.complete).toBe(false);
   });
 
   it('should mark a requirement as not satisfied', () => {
-    component.evaluate();
-
     component.setRequirementStatus(
       'requirement-1',
       'not-satisfied'
     );
 
     expect(component.result?.totalSatisfied).toBe(0);
-    expect(component.result?.totalMissing).toBe(1);
+    expect(component.result?.totalMissing).toBe(3);
     expect(component.result?.complete).toBe(false);
   });
 
@@ -138,9 +218,11 @@ describe('RequirementsCheckerComponent', () => {
   });
 
   it('should emit the result when finished', () => {
-    const emitSpy = vi.spyOn(component.completed, 'emit');
+    const emitSpy = vi.spyOn(
+      component.completed,
+      'emit'
+    );
 
-    component.evaluate();
     component.finish();
 
     expect(emitSpy).toHaveBeenCalledWith(component.result);

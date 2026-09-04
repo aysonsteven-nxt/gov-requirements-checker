@@ -15,6 +15,11 @@ import {
 import { RequirementsEngine } from '../../core/requirements/requirements-engine';
 import { RequirementsResult } from '../../core/requirements/requirements-result';
 
+interface AlternativeRequirementGroup {
+  id: string;
+  evaluations: RequirementEvaluation[];
+}
+
 @Component({
   selector: 'app-requirements-checker',
   templateUrl: './requirements-checker.component.html',
@@ -65,15 +70,61 @@ export class RequirementsCheckerComponent implements OnInit {
     this.evaluate();
   }
 
-  isSatisfied(requirement: RequirementEvaluation): boolean {
-    return requirement.satisfied;
-  }
-
   getStatus(requirementId: string): RequirementStatus {
     return (
       this.states.find(
         (state) => state.requirementId === requirementId
       )?.status ?? 'unanswered'
+    );
+  }
+
+  getIndividualRequirements(): RequirementEvaluation[] {
+    return (
+      this.result?.evaluations.filter(
+        (evaluation) =>
+          evaluation.applicable &&
+          !evaluation.requirement.alternativeGroup
+      ) ?? []
+    );
+  }
+
+  getAlternativeGroups(): AlternativeRequirementGroup[] {
+    if (!this.result) {
+      return [];
+    }
+
+    const groups = new Map<string, RequirementEvaluation[]>();
+
+    for (const evaluation of this.result.evaluations) {
+      if (
+        !evaluation.applicable ||
+        !evaluation.requirement.alternativeGroup
+      ) {
+        continue;
+      }
+
+      const groupId = evaluation.requirement.alternativeGroup;
+
+      const evaluations = groups.get(groupId) ?? [];
+
+      evaluations.push(evaluation);
+
+      groups.set(groupId, evaluations);
+    }
+
+    return Array.from(groups.entries()).map(
+      ([id, evaluations]) => ({
+        id,
+        evaluations,
+      })
+    );
+  }
+
+  isAlternativeGroupSatisfied(
+    evaluations: RequirementEvaluation[]
+  ): boolean {
+    return evaluations.some(
+      (evaluation) => evaluation.satisfied
     );
   }
 

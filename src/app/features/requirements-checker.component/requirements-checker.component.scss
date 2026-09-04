@@ -140,3 +140,59 @@ h1 {
   font-weight: 700;
   cursor: pointer;
 }
+
+.alternative-group {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+}
+
+.alternative-group__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alternative-group__header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.alternative-group__header p {
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
+.alternative-group__status {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #f2f2f2;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.alternative-group__options {
+  display: grid;
+}
+
+.requirement--alternative {
+  padding: 1.25rem 0;
+}
+
+.requirement--alternative:first-child {
+  padding-top: 0;
+}
+
+.requirement--alternative:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.requirement--alternative h4 {
+  margin: 0;
+  font-size: 1rem;
+}

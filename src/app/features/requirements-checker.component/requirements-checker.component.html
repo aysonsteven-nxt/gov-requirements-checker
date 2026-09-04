@@ -23,65 +23,147 @@
 
     @if (result) {
       @for (
-        evaluation of result.evaluations;
+        evaluation of getIndividualRequirements();
         track evaluation.requirement.id
       ) {
-        @if (evaluation.applicable) {
-          <article class="requirement">
-            <div class="requirement__content">
-              <h3>{{ evaluation.requirement.name }}</h3>
+        <article class="requirement">
+          <div class="requirement__content">
+            <h3>{{ evaluation.requirement.name }}</h3>
 
-              @if (evaluation.requirement.description) {
-                <p>
-                  {{ evaluation.requirement.description }}
-                </p>
-              }
+            @if (evaluation.requirement.description) {
+              <p>
+                {{ evaluation.requirement.description }}
+              </p>
+            }
 
-              @if (evaluation.requirement.alternativeGroup) {
-                <span class="alternative-label">
-                  One of the accepted alternatives
-                </span>
-              }
+            <small>
+              Source:
+              {{ evaluation.requirement.source.agency }}
+            </small>
+          </div>
 
-              <small>
-                Source:
-                {{ evaluation.requirement.source.agency }}
-              </small>
+          <div class="requirement__actions">
+            <button
+              type="button"
+              [class.active]="
+                getStatus(evaluation.requirement.id) === 'satisfied'
+              "
+              (click)="
+                setRequirementStatus(
+                  evaluation.requirement.id,
+                  'satisfied'
+                )
+              "
+            >
+              I have this
+            </button>
+
+            <button
+              type="button"
+              [class.active]="
+                getStatus(evaluation.requirement.id) === 'not-satisfied'
+              "
+              (click)="
+                setRequirementStatus(
+                  evaluation.requirement.id,
+                  'not-satisfied'
+                )
+              "
+            >
+              I don't have this
+            </button>
+          </div>
+        </article>
+      }
+
+      @for (
+        group of getAlternativeGroups();
+        track group.id
+      ) {
+        <section class="alternative-group">
+          <div class="alternative-group__header">
+            <div>
+              <h3>Provide one of these</h3>
+
+              <p>
+                You only need to satisfy one of the following
+                options.
+              </p>
             </div>
 
-            <div class="requirement__actions">
-              <button
-                type="button"
-                [class.active]="
-                  getStatus(evaluation.requirement.id) === 'satisfied'
-                "
-                (click)="
-                  setRequirementStatus(
-                    evaluation.requirement.id,
-                    'satisfied'
-                  )
-                "
-              >
-                I have this
-              </button>
+            @if (isAlternativeGroupSatisfied(group.evaluations)) {
+              <span class="alternative-group__status">
+                ✓ Complete
+              </span>
+            } @else {
+              <span class="alternative-group__status">
+                Required
+              </span>
+            }
+          </div>
 
-              <button
-                type="button"
-                [class.active]="
-                  getStatus(evaluation.requirement.id) === 'not-satisfied'
-                "
-                (click)="
-                  setRequirementStatus(
-                    evaluation.requirement.id,
-                    'not-satisfied'
-                  )
-                "
+          <div class="alternative-group__options">
+            @for (
+              evaluation of group.evaluations;
+              track evaluation.requirement.id
+            ) {
+              <article
+                class="requirement requirement--alternative"
               >
-                I don't have this
-              </button>
-            </div>
-          </article>
-        }
+                <div class="requirement__content">
+                  <h4>
+                    {{ evaluation.requirement.name }}
+                  </h4>
+
+                  @if (evaluation.requirement.description) {
+                    <p>
+                      {{ evaluation.requirement.description }}
+                    </p>
+                  }
+
+                  <small>
+                    Source:
+                    {{ evaluation.requirement.source.agency }}
+                  </small>
+                </div>
+
+                <div class="requirement__actions">
+                  <button
+                    type="button"
+                    [class.active]="
+                      getStatus(evaluation.requirement.id) ===
+                      'satisfied'
+                    "
+                    (click)="
+                      setRequirementStatus(
+                        evaluation.requirement.id,
+                        'satisfied'
+                      )
+                    "
+                  >
+                    I have this
+                  </button>
+
+                  <button
+                    type="button"
+                    [class.active]="
+                      getStatus(evaluation.requirement.id) ===
+                      'not-satisfied'
+                    "
+                    (click)="
+                      setRequirementStatus(
+                        evaluation.requirement.id,
+                        'not-satisfied'
+                      )
+                    "
+                  >
+                    I don't have this
+                  </button>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
       }
     }
   </div>
