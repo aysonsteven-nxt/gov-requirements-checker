@@ -1,3 +1,9 @@
-<app-service-selection
-  (serviceSelected)="onServiceSelected($event)"
-/>
+@if (!selectedService) {
+  <app-service-selection
+    (serviceSelected)="onServiceSelected($event)"
+  />
+} @else {
+  <app-applicant-questionnaire
+    (contextSubmitted)="onApplicantContextSubmitted($event)"
+  />
+}
